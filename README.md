@@ -27,6 +27,7 @@ Runtime details provided by Profiler includes: i) covered and uncovered line num
 .
 1 "file1.p" "" 0                    //program information block info
 .
+.
 1 14 4 1                            //executable lines block info
 .
 1 14 1 0.000365 1.876325            //covered lines block info
