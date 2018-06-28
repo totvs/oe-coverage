@@ -21,8 +21,17 @@ Inside a "file" element, insert a "lineToCover" for each line which can be cover
 * "covered" (mandatory): boolean value indicating whether tests actually hit that line.
 ## OpenEdge ABL Profiler
 OpenEdge ABL has a built-in capability for providing details about runtime execution. This capability, called [Profiler](https://knowledgebase.progress.com/articles/Article/19495?q=profiler+handle&l=en_US&fs=Search&pn=1), collects execution times on blocks of code so that one can evaluate performance.
-Runtime details provided by Profiler includes: i) covered and uncovered line numbers, ii) iterations counter, iii) average time, and iv) cumulative time.
-falar sobre a estrutura do arquivo de profiler
+Runtime details provided by Profiler includes: i) covered and uncovered line numbers, ii) iterations counter, iii) average time, and iv) cumulative time. Below is a simple example of profiler output.
+```
+1 06/26/2018 "Profiler" 18:00:00 "" //session information block
+.
+1 "file1.p" "" 0                    //program information block
+.
+1 14 4 1                            //executable lines block
+.
+1 14 1 0.000365 1.876325            //covered lines block
+.
+```
 ...
 ### Generating Profiler
 Configuration Profiler parameters are held by ABL session. Details of how to configure profiler session parameters can be obtained [here](https://knowledgebase.progress.com/articles/Article/P93997). Below is a simple example of profiler session parameters configuration:
