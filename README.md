@@ -52,7 +52,7 @@ This oe-coverage plug-in is a CLI application. This application can be used with
 ```
 SonarCoverage <profiler> <listing-path> <sonar-output> [sonar-source-path]
 ```
-* "profiler" (mandatory): profiler output path.
+* "profiler" (mandatory): profiler output file or path containing output files.
 * "listing-path" (mandatory): file or directory with [listing files](https://documentation.progress.com/output/ua/OpenEdge_latest/index.html#page/gsabl/generating-a-procedure-listing-file.html). This is a kind of intermediate source code containing preprocessed include lines.
 * "sonar-output" (mandatory): Sonar's XML generic test
 * "sonar-source-path" (optional): Sonar's project relative path
