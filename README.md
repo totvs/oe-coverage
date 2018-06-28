@@ -16,11 +16,11 @@ This plugin uses a generic format for Sonarqube's test coverage and test executi
 ```
 The root node should be named "coverage" and its version attribute should be set to "1". Insert a "file" element for each file which can be covered by tests. Its "path" attribute can be either absolute or relative to the root of the module.
 Inside a "file" element, insert a "lineToCover" for each line which can be covered by unit tests. It can have the following attributes:
-* "lineNumber" (mandatory): number of line with [executable statements]{https://docs.sonarqube.org/display/DEV/Executable+Lines}
+* "lineNumber" (mandatory): number of line with [executable statements](https://docs.sonarqube.org/display/DEV/Executable+Lines)
 * "covered" (mandatory): boolean value indicating whether tests actually hit that line
 ## OpenEdge ABL Profiler
 OpenEdge ABL has a built-in capability for providing details about runtime execution. This capability, called [Profiler](https://knowledgebase.progress.com/articles/Article/19495?q=profiler+handle&l=en_US&fs=Search&pn=1), collects execution times on blocks of code so that one can evaluate performance.
-Runtime details provided by Profiler includes: (i) covered and uncovered line numbers, (ii) iterations counter, (iii) average time, and (iv) cumulative time.
+Runtime details provided by Profiler includes: i) covered and uncovered line numbers, ii) iterations counter, iii) average time, and iv) cumulative time.
 falar sobre a estrutura do arquivo de profiler
 ...
 ### Generating Profiler
@@ -44,6 +44,6 @@ This oe-coverage plug-in is a CLI application. This application can be used with
 SonarCoverage <profiler> <listing-path> <sonar-output> [sonar-source-path]
 ```
 * "profiler" (mandatory): profiler output path.
-* "listing-path" (mandatory): file or directory with [listing files](https://documentation.progress.com/output/ua/OpenEdge_latest/index.html#page/gsabl/generating-a-procedure-listing-file.html). This is a intermediate source code with preprocessed includes.
+* "listing-path" (mandatory): file or directory with [listing files](https://documentation.progress.com/output/ua/OpenEdge_latest/index.html#page/gsabl/generating-a-procedure-listing-file.html). This is a kind of intermediate source code containing preprocessed include lines.
 * "sonar-output" (mandatory): Sonar's XML generic test
 * "sonar-source-path" (optional): Sonar's project relative path
