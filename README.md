@@ -25,7 +25,7 @@ Runtime details provided by Profiler includes: i) covered and uncovered line num
 falar sobre a estrutura do arquivo de profiler
 ...
 ### Generating Profiler
-Configuration Profiler parameters are held by ABL session. Some information on how to configure profiler session parameters can be obtained [here](https://knowledgebase.progress.com/articles/Article/P93997). Below is a simple example of profiler session parameters configuration:
+Configuration Profiler parameters are held by ABL session. Details of how to configure profiler session parameters can be obtained [here](https://knowledgebase.progress.com/articles/Article/P93997). Below is a simple example of profiler session parameters configuration:
 ```
 PROFILER:ENABLED = TRUE.
 PROFILER:DIRECTORY = "<path>".
