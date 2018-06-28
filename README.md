@@ -1,5 +1,5 @@
 # oe-coverage
-OpenEdge Coverage - Sonarqube Plugin
+OpenEdge Coverage - [Sonarqube](https://www.sonarqube.org/) Plugin
 This repository contains a Sonarqube Coverage Plugin for using on OpenEdge ABL projects.
 ## Sonarqube Test Coverage
 This plugin uses a generic format for Sonarqube's test coverage and test execution import known as [Generic Test Data](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data). The Sonarqube's coverage format is a simple XML and looks like this:
