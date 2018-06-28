@@ -1,9 +1,9 @@
 # oe-coverage
-OpenEdge Coverage - [Sonarqube](https://www.sonarqube.org/) Plugin
+OpenEdge Coverage - [Sonarqube](https://www.sonarqube.org/) Plug-in
 
-This repository contains a Sonarqube Coverage Plugin for using on OpenEdge ABL projects.
+This repository contains a Sonarqube Coverage Plug-in for using on OpenEdge ABL projects.
 ## Sonarqube Test Coverage
-This plugin uses a generic format for Sonarqube's test coverage and test execution import known as [Generic Test Data](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data). The Sonarqube's coverage format is a simple XML and looks like this:
+This plug-in uses a generic format for Sonarqube's test coverage and test execution import known as [Generic Test Data](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data). The Sonarqube's coverage format is a simple XML and looks like this:
 ```
 <coverage version="1">
   <file path="file1.p">
@@ -39,7 +39,7 @@ PROFILER:ENABLED = FALSE.
 PROFILER:PROFILING = FALSE.
 PROFILER:WRITE-DATA().
 ```
-## Running Plugin
+## Running Plug-in
 This oe-coverage plug-in is a CLI application. This application can be used with ant builders or maven tasks.
 ```
 SonarCoverage <profiler> <listing-path> <sonar-output> [sonar-source-path]
