@@ -32,7 +32,6 @@ Runtime details provided by Profiler includes: i) covered and uncovered line num
 1 14 1 0.000365 1.876325            //covered lines block
 .
 ```
-...
 ### Generating Profiler
 Configuration Profiler parameters are held by ABL session. Details of how to configure profiler session parameters can be obtained [here](https://knowledgebase.progress.com/articles/Article/P93997). Below is a simple example of profiler session parameters configuration:
 ```
