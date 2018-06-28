@@ -23,13 +23,13 @@ Inside a "file" element, insert a "lineToCover" for each line which can be cover
 OpenEdge ABL has a built-in capability for providing details about runtime execution. This capability, called [Profiler](https://knowledgebase.progress.com/articles/Article/19495?q=profiler+handle&l=en_US&fs=Search&pn=1), collects execution times on blocks of code so that one can evaluate performance.
 Runtime details provided by Profiler includes: i) covered and uncovered line numbers, ii) iterations counter, iii) average time, and iv) cumulative time. Below is a simple example of profiler output.
 ```
-1 06/26/2018 "Profiler" 18:00:00 "" //session information block
+1 06/26/2018 "Profiler" 18:00:00 "" //session information block info
 .
-1 "file1.p" "" 0                    //program information block
+1 "file1.p" "" 0                    //program information block info
 .
-1 14 4 1                            //executable lines block
+1 14 4 1                            //executable lines block info
 .
-1 14 1 0.000365 1.876325            //covered lines block
+1 14 1 0.000365 1.876325            //covered lines block info
 .
 ```
 ### Generating Profiler
