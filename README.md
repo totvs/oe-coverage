@@ -16,8 +16,8 @@ This plugin uses a generic format for Sonarqube's test coverage and test executi
 ```
 The root node should be named "coverage" and its version attribute should be set to "1". Insert a "file" element for each file which can be covered by tests. Its "path" attribute can be either absolute or relative to the root of the module.
 Inside a "file" element, insert a "lineToCover" for each line which can be covered by unit tests. It can have the following attributes:
-* "lineNumber" (mandatory): number of line with [executable statements](https://docs.sonarqube.org/display/DEV/Executable+Lines)
-* "covered" (mandatory): boolean value indicating whether tests actually hit that line
+* "lineNumber" (mandatory): number of line with [executable statements](https://docs.sonarqube.org/display/DEV/Executable+Lines).
+* "covered" (mandatory): boolean value indicating whether tests actually hit that line.
 ## OpenEdge ABL Profiler
 OpenEdge ABL has a built-in capability for providing details about runtime execution. This capability, called [Profiler](https://knowledgebase.progress.com/articles/Article/19495?q=profiler+handle&l=en_US&fs=Search&pn=1), collects execution times on blocks of code so that one can evaluate performance.
 Runtime details provided by Profiler includes: i) covered and uncovered line numbers, ii) iterations counter, iii) average time, and iv) cumulative time.
