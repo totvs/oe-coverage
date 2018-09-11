@@ -80,6 +80,11 @@ public class ListingFile {
 							close--;
 						}
 
+						if(close > 0) { 
+							listings.remove(listings.size() - 1);
+							sources.remove(sources.size() - 1);
+						}
+
 						include = last + include;
 						if (close == 0) break;
 					}
@@ -87,7 +92,13 @@ public class ListingFile {
 					include = include.substring(12).trim();
 					include = include.substring(include.indexOf('{'));
 
-					stack.add(include.replaceAll("\\{", "").replaceAll("\\}", "").split(" ")[0]);
+					String[] token = include.split(" ");
+					
+					for (String item : token) {
+						if (item.indexOf("{") != -1 && !item.contains("&") && item.contains("/")) {
+							stack.add(item.replace("{", "").replace("}", ""));
+						}
+					}
 				} else {
 					stack.remove(stack.size() - 1);
 				}
