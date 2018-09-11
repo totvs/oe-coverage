@@ -2,9 +2,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -96,15 +93,10 @@ public class SonarCoverage {
 		Map<String, Map<Integer, Boolean>> data = new HashMap<String, Map<Integer, Boolean>>();
 
 		for (String source : profiler.getSources()) {
+							
+			String file = checkAbsolutePath(source, listingPath);
 			
-			String file = getAbsolutePath(listingPath, source);
-
-			if(file == null) {
-				// Class - Ex.: com.totvs.sample (com/totvs/sample.cls)
-				file = getAbsolutePath(listingPath, source.replace(".", "/"));
-			}
-			
-			if (file != null) {				
+			if (file != null) {			
 				
 				ListingFile list = new ListingFile(source, file);
 				Map<Integer, Boolean> coverage = profiler.getCoverageInfo(source);
@@ -131,30 +123,21 @@ public class SonarCoverage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
 		writer.write("<coverage version=\"1\">\n");
 
-		for (String source : data.keySet()) {
-			
-			String sourceP = source;
-			
-			int pivorSource = source.lastIndexOf(".");
-			
+		for (String source : data.keySet()) {			
+			String sourceP = source;			
+			int pivorSource = source.lastIndexOf(".");			
 			String extSource = "";
 			
 			if(pivorSource != -1)					
 				extSource = source.substring(pivorSource);
 			
-			if(!extSource.contains("i")) {
+			if(!extSource.contains("i")) {	
 				
-				String file = getAbsolutePath(listingPath, source);
+				String file = checkAbsolutePath(source, listingPath); 
 				
-				if(file == null) {
-					// Class - Ex.: com.totvs.sample (com/totvs/sample.cls)
-					file = getAbsolutePath(listingPath, source.replace(".", "/"));
-				}
-				
-				if(file != null) {
-					
-					String ext = file.substring(file.lastIndexOf("."));
-					
+				if (file != null) {					
+					String ext = "";					
+					ext = file.toString().substring(file.lastIndexOf("."));					
 					int pivor = source.lastIndexOf(".");
 						
 					if(ext.equalsIgnoreCase(".cls"))
@@ -176,10 +159,6 @@ public class SonarCoverage {
 			for (Integer lineno : lines) {
 				Boolean covered = coverage.get(lineno);
 				
-				if (source.indexOf("ut0666.i") > 0) {
-					System.out.println();
-				}
-				
 				writer.write("\t\t<lineToCover lineNumber=\"" + lineno + "\" covered=\"" + covered + "\"/>\n");
 			}
 
@@ -190,21 +169,30 @@ public class SonarCoverage {
 		writer.close();
 	}
 	
-	public String getAbsolutePath(String path, String name) throws IOException {
+	/**
+	 * Search for file's existence in gathered list's absolute path  
+	 * @param input pack, absolute path
+	 * @throws IOException 
+	 */
+	public String checkAbsolutePath(String source, String listingPath) throws IOException {	
+		String[] EXTENSIONS = new String[] { ".cls", ".p", ".py", ".w" };
+		String rFile = null;
+		int extension = 0;
 		
-		String absolute = null;
-				
-		Path p = Paths.get(path);
+		File file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/"));
 		
-		if (p.toFile().exists()) {
-			PropathVisitor visitor = new PropathVisitor(name);
-			Files.walkFileTree(p, visitor);
-			
-			if (visitor.getFile() != null) {
-				absolute = visitor.getFile().getAbsolutePath();
-			}
-		}		
-	
-		return absolute;
+		if(!file.exists()) {		
+			while (extension < EXTENSIONS.length) {			
+				file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/").replace(".", "/") + EXTENSIONS[extension]);
+				if (file.exists()){				
+					rFile = file.toString();
+					break;
+				}
+				extension++;
+	        }			
+		}else{
+			rFile = file.toString();
+		}
+		return rFile;
 	}
 }
