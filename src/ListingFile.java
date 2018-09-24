@@ -40,7 +40,7 @@ public class ListingFile {
 			}
 
 			col1 = line.substring(0, 2).trim(); // Source number
-			col2 = line.substring(3, 7).trim(); // Line number
+			col2 = line.substring(2, 7).trim(); // Line number
 			col3 = line.substring(8, 11).trim(); // Block number
 
 			col1 = (col1.equals("") ? "0" : col1);

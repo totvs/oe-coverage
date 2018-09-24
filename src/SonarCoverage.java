@@ -107,14 +107,17 @@ public class SonarCoverage {
 						String sourceR = list.getOriginalSource(line);
 						int lineR = list.getOriginalLine(line);
 
-						Map<Integer, Boolean> lines = data.get(sourceR);
-
-						if (lines == null) {
-							lines = new TreeMap<Integer, Boolean>();
-							data.put(sourceR, lines);
+						if(lineR != 0) {
+						
+							Map<Integer, Boolean> lines = data.get(sourceR);
+	
+							if (lines == null) {
+								lines = new TreeMap<Integer, Boolean>();
+								data.put(sourceR, lines);
+							}
+	
+							lines.put(lineR, covered);
 						}
-
-						lines.put(lineR, covered);
 					}
 				}
 			}
