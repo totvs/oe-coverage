@@ -115,15 +115,17 @@ public class ProfilerCoverage {
 				filename = dbg.get(codeno);
 				source = sources.get(filename);
 				
-				// Creates the source covered lines list and adds the covered line.
-				if (source == null) {
-					source = new TreeMap<Integer, Boolean>();
-					sources.put(filename, source);
-				}
-				
-				// If the coverage line still doesn't exist or it's false, creates the new as true.
-				if (!source.containsKey(lineno) || !source.get(lineno)) {
-					source.put(lineno, true);
+				if(filename != null){
+					// Creates the source covered lines list and adds the covered line.
+					if (source == null) {
+						source = new TreeMap<Integer, Boolean>();
+						sources.put(filename, source);
+					}
+					
+					// If the coverage line still doesn't exist or it's false, creates the new as true.
+					if (!source.containsKey(lineno) || !source.get(lineno)) {
+						source.put(lineno, true);
+					}
 				}
 			}
 		}
@@ -152,7 +154,7 @@ public class ProfilerCoverage {
 			// Get the source from the list.
 			source = sources.get(filename);
 			
-			if (source == null) {
+			if (source == null && filename != null) {
 				source = new TreeMap<Integer, Boolean>();
 				sources.put(filename, source);
 			}
