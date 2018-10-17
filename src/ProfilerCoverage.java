@@ -49,11 +49,16 @@ public class ProfilerCoverage {
 				} else if (blocks == PROFILER_BLOCK_COVERAGE) {
 					this.parseCoverage(line);
 				} else if (blocks > PROFILER_BLOCK_SOURCES_LINES) {
-					if (!readingLines) {
-						readingLines = true;
-						source = this.getLinesSource(line);
-					} else if (source != null) {
-						this.parseLines(line, source);
+					
+					if(!this.parseCoverage(line)) {
+						
+						if (!readingLines) {
+							source = this.getLinesSource(line);
+							if(source!=null)
+								readingLines = true;							
+						} else if (source != null) {
+							this.parseLines(line, source);
+						}
 					}
 				}
 			}
@@ -94,10 +99,11 @@ public class ProfilerCoverage {
 	/**
 	 * Parses the coverage line extracted from the profiler.
 	 * @param coverageLine Line extracted from the profiler containing the coverage information.
-	 * 
+	 * @return if successful in covering the line
+	 *
 	 * {@code example: "32 1974 1 0.000496 0.000496"}
 	 */
-	private void parseCoverage(String coverageLine) {
+	private boolean parseCoverage(String coverageLine) {
 		String filename;
 		String[] splitted = coverageLine.split(" ");
 		
@@ -128,7 +134,11 @@ public class ProfilerCoverage {
 					}
 				}
 			}
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
 	/**
@@ -146,7 +156,7 @@ public class ProfilerCoverage {
 		int codeno;
 		String filename;
 
-		if (matcher.find()) {
+		if (matcher.groupCount() == 3 && matcher.find()) {
 			// Get the source ID information.
 			codeno = Integer.valueOf(matcher.group(2));
 			filename = dbg.get(codeno);

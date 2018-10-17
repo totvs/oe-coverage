@@ -184,7 +184,7 @@ public class SonarCoverage {
 		
 		File file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/"));
 		
-		if(!file.exists()) {		
+		if(!file.exists() || file.isDirectory()) {		
 			while (extension < EXTENSIONS.length) {			
 				file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/").replace(".", "/") + EXTENSIONS[extension]);
 				if (file.exists()){				

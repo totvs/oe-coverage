@@ -18,6 +18,9 @@ public class ListingFile {
 	}
 
 	private void readListingFile(String source, String file) throws IOException {
+		
+		System.out.println("** Reading listing file \"" + file + "\" **");
+		
 		ArrayList<String> listingFile = this.adjustListingFile(file);
 
 		int src = 0;
@@ -29,8 +32,6 @@ public class ListingFile {
 		String col1;
 		String col2;
 		String col3;
-		
-		System.out.println("** Reading listing file \"" + file + "\" **");
 		
 		for (int i = 0; i < listingFile.size(); i++) {
 			line = listingFile.get(i);
@@ -92,11 +93,21 @@ public class ListingFile {
 					include = include.substring(12).trim();
 					include = include.substring(include.indexOf('{'));
 
-					String[] token = include.split(" ");
+					String[] tokens = include.split(" ");
 					
-					for (String item : token) {
-						if (item.indexOf("{") != -1 && !item.contains("&") && item.contains("/")) {
-							stack.add(item.replace("{", "").replace("}", ""));
+					for (String token : tokens) {
+						
+						if (token.indexOf("{") != -1){
+							
+							String[] items = token.split("}");
+							
+							for (String item : items) {
+							
+								if(!item.contains("&") && item.contains("/")) {
+									
+									stack.add(item.replace("{", "").replace("}", ""));
+								}
+							}
 						}
 					}
 				} else {
