@@ -134,7 +134,8 @@ public class SonarCoverage {
 			if(pivorSource != -1)					
 				extSource = source.substring(pivorSource);
 			
-			if(!extSource.contains("i")) {	
+			
+			if((source.substring(source.lastIndexOf(".") + 1, source.lastIndexOf(".") + 2) != "i") && ((source.length() - source.lastIndexOf(".")) > 3)){
 				
 				String file = checkAbsolutePath(source, listingPath); 
 				
@@ -181,6 +182,21 @@ public class SonarCoverage {
 		String[] EXTENSIONS = new String[] { ".cls", ".p", ".py", ".w" };
 		String rFile = null;
 		int extension = 0;
+		
+		/*if((source.contains("IHostApplication"))||(source.contains("datasul-alias-di"))){ //("IHostApplication")){
+			System.out.println("pegou");
+		}*/
+		
+		try{	  
+			if((source.indexOf(".") != source.lastIndexOf(".")) && (source.lastIndexOf(".") > -1)){ //pode ser um package por possuir mais de um "." ex: com.datasul.DB.interface
+				source = source.replace(".", "/");
+				if ((source.length() - source.lastIndexOf("/")) < 4){ //se a distância da ultima "/" até o final for menor do que 4, se trata de uma extensão ex: com.datasul.DB.interface.cls				
+					source = source.substring(0, source.lastIndexOf(".")) + "." + source.substring(source.lastIndexOf(".") + 1);
+				}		
+			}
+		}catch(Exception e){
+			System.out.println(e.getMessage()); // Ex: //jv-fwk-dev02/docker/projects/datasul/Teste-Datasul-12.1.20/datasul-alias-di.p
+		}
 		
 		File file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/"));
 		
