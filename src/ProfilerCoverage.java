@@ -45,7 +45,9 @@ public class ProfilerCoverage {
 				if (blocks == PROFILER_BLOCK_INFO) {
 					System.out.println("** Reading profiler file \"" + file + "\" **");
 				} else if (blocks == PROFILER_BLOCK_SOURCES) {
-					this.parseSource(line);
+					if (!parseSource(line)){
+						blocks++;
+					}
 				} else if (blocks == PROFILER_BLOCK_COVERAGE) {
 					this.parseCoverage(line);
 				} else if (blocks > PROFILER_BLOCK_SOURCES_LINES) {
@@ -81,7 +83,7 @@ public class ProfilerCoverage {
 	 * 
 	 * {@code example: "698 "remove-all-links adm/objects/broker.p" "" 0"}
 	 */
-	private void parseSource(String sourceLine) {
+	private boolean parseSource(String sourceLine) {
 		Matcher matcher = Pattern.compile("\"([^\"]*)\"|(\\S+)").matcher(sourceLine);
 
 		// Get the source ID information.
@@ -90,10 +92,15 @@ public class ProfilerCoverage {
 
 		// Get the source path information.
 		matcher.find();
-		String list[] = matcher.group(1).split(" ");
-		
-		// Add the found source information to the list.
-		dbg.put(codeno, list[list.length - 1].replace("\\", "/"));
+		try{
+			String list[] = matcher.group(1).split(" ");
+			// Add the found source information to the list.
+			dbg.put(codeno, list[list.length - 1].replace("\\", "/"));
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}		
+		return true;
 	}
 	
 	/**

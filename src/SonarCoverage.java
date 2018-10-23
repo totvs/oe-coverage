@@ -133,9 +133,8 @@ public class SonarCoverage {
 			
 			if(pivorSource != -1)					
 				extSource = source.substring(pivorSource);
-			
-			if(!extSource.contains("i")) {	
-				
+						
+			if(extSource.replaceAll("[^0-9]", "") != "i"){ //can't accept extensions like ".i, .i1, .i2, ..."				
 				String file = checkAbsolutePath(source, listingPath); 
 				
 				if (file != null) {					
@@ -152,8 +151,7 @@ public class SonarCoverage {
 							sourceP = source + ext;
 					}
 				}
-			}
-			
+			}			
 			writer.write("\t<file path=\"" + this.sourcePath + sourceP.replaceAll("\\\\", "/") + "\">\n");
 
 			Map<Integer, Boolean> coverage = data.get(source);
@@ -180,7 +178,19 @@ public class SonarCoverage {
 	public String checkAbsolutePath(String source, String listingPath) throws IOException {	
 		String[] EXTENSIONS = new String[] { ".cls", ".p", ".py", ".w" };
 		String rFile = null;
-		int extension = 0;
+		int extension = 0;			
+				
+		
+		try{	  
+			if((source.indexOf(".") != source.lastIndexOf(".")) && (source.lastIndexOf(".") > -1)){ //Gather only Packages paths replacing "." for "/"
+				source = source.replace(".", "/");
+				if ((source.length() - source.lastIndexOf("/")) <= 3){ //if the path has an extension, for instance "/cls"					
+					source = source.substring(0, source.lastIndexOf("/")) + "." + source.substring(source.lastIndexOf("/") + source.length());
+				}
+			}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		
 		File file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/"));
 		
