@@ -112,7 +112,7 @@ public class ProfilerCoverage {
 		int lineno = 0;
 		int codeno = 0;
 		
-		if (splitted.length == 5) {
+		if (splitted.length == 5 && !splitted[0].trim().equals("") && !splitted[1].trim().equals("")) {
 			codeno = Integer.valueOf(splitted[0].trim());
 			lineno = Integer.valueOf(splitted[1].trim());
 
