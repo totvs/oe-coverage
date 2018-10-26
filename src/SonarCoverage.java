@@ -134,7 +134,7 @@ public class SonarCoverage {
 			if(pivorSource != -1)					
 				extSource = source.substring(pivorSource);
 						
-			if(extSource.replaceAll("[^0-9]", "") != "i"){ //can't accept extensions like ".i, .i1, .i2, ..."				
+			if(!extSource.replaceAll("[^0-9]", "").equals("i")){ //can't accept extensions like ".i, .i1, .i2, ..."				
 				String file = checkAbsolutePath(source, listingPath); 
 				
 				if (file != null) {					
