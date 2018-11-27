@@ -91,12 +91,15 @@ public class SonarCoverage {
 	 */
 	public void createDataTest(String output) throws IOException {
 		Map<String, Map<Integer, Boolean>> data = new HashMap<String, Map<Integer, Boolean>>();
-
+		String file;
+		String extSource;
+		int pivorSource;
+		
 		for (String source : profiler.getSources()) {
-							
-			String file = checkAbsolutePath(source, listingPath);
+						
+			file = checkAbsolutePath(source, listingPath);
 			
-			if (file != null) {			
+			if (file != null){ //can't accept extensions like ".i, .i1, .i2, ...") {			
 				
 				ListingFile list = new ListingFile(source, file);
 				Map<Integer, Boolean> coverage = profiler.getCoverageInfo(source);
@@ -121,6 +124,7 @@ public class SonarCoverage {
 					}
 				}
 			}
+			
 		}
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
@@ -128,14 +132,15 @@ public class SonarCoverage {
 
 		for (String source : data.keySet()) {			
 			String sourceP = source;			
-			int pivorSource = source.lastIndexOf(".");			
-			String extSource = "";
+			pivorSource = source.lastIndexOf(".");			
+			extSource = "";
+			
 			
 			if(pivorSource != -1)					
 				extSource = source.substring(pivorSource);
 						
-			if(!extSource.replaceAll("[^0-9]", "").equals("i")){ //can't accept extensions like ".i, .i1, .i2, ..."				
-				String file = checkAbsolutePath(source, listingPath); 
+			if(!extSource.replaceAll("[0-9]", "").equals(".i")){ //can't accept extensions like ".i, .i1, .i2, ..."				
+				file = checkAbsolutePath(source, listingPath); 
 				
 				if (file != null) {					
 					String ext = "";					
@@ -179,7 +184,6 @@ public class SonarCoverage {
 		String[] EXTENSIONS = new String[] { ".cls", ".p", ".py", ".w" };
 		String rFile = null;
 		int extension = 0;			
-				
 		
 		try{	  
 			if((source.indexOf(".") != source.lastIndexOf(".")) && (source.lastIndexOf(".") > -1)){ //Gather only Packages paths replacing "." for "/"
@@ -188,15 +192,24 @@ public class SonarCoverage {
 					source = source.substring(0, source.lastIndexOf("/")) + "." + source.substring(source.lastIndexOf("/") + source.length());
 				}
 			}
+			
 		}catch(Exception e){
-			System.out.println(e.getMessage());
+			System.out.println("** Error reading source: '" + source + "' - Exception: " + e.getMessage());
 		}
 		
 		File file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/"));
 		
-		if(!file.exists() || file.isDirectory()) {		
+		if(!file.exists() || file.isDirectory()) {	
+			if(source.lastIndexOf(".") > 0){
+				source = source.substring(0,source.lastIndexOf("."));
+			}
 			while (extension < EXTENSIONS.length) {			
-				file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/").replace(".", "/") + EXTENSIONS[extension]);
+				if(EXTENSIONS[extension].equalsIgnoreCase(".cls")){
+					file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/").replace(".", "/") + EXTENSIONS[extension]);
+				}else{
+					file = new File(listingPath.replaceAll("\\\\", "/") + "/" + source.replaceAll("\\\\", "/") + EXTENSIONS[extension]);
+				}
+
 				if (file.exists()){				
 					rFile = file.toString();
 					break;
