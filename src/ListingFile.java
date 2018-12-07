@@ -8,6 +8,8 @@ public class ListingFile {
 	private List<String[]> listings = new ArrayList<>();
 	private List<String> sources = new ArrayList<>();
 
+	private static final int MAX_LISTING_LINE_LENGH = 354;
+	
 	private static final int LISTING_INCLUDE = 0;
 	private static final int LISTING_LINE = 1;
 	private static final int LISTING_BLOCK = 2;
@@ -27,11 +29,14 @@ public class ListingFile {
 		int srcOld = -1;
 
 		String line;
+		String lineOld = "";
+		
 		List<String> stack = new ArrayList<String>();
 
 		String col1;
 		String col2;
 		String col3;
+		String col2Old = "";
 		
 		for (int i = 0; i < listingFile.size(); i++) {
 			line = listingFile.get(i);
@@ -114,16 +119,37 @@ public class ListingFile {
 					stack.remove(stack.size() - 1);
 				}
 			}
-			
-			String listing[] = new String[4];
-			listing[LISTING_INCLUDE] = Integer.toString(src);
-			listing[LISTING_LINE] = col2;
-			listing[LISTING_BLOCK] = col3;
-			listing[LISTING_LINE_CONTENT] = line.substring(12).replaceAll("^\\s+","").replaceAll("\\s+$","");
 
-			listings.add(listing);
-			sources.add(stack.isEmpty() ? source : stack.get(stack.size() - 1));
+			String listing[];
 
+			/* Line break. Ex. 1:1  2  123     DISPLAY var1 var2 var3 [...]
+								 1  2  123     var1100 var1101 var1102.
+								
+						   Ex. 2:1  2    1     DISPLAY var1 var2 var3 [...]
+								 1  2  123     var1100 var1101 var1102.
+			*/
+			if((col2Old.equalsIgnoreCase(col2) || (col2Old.equalsIgnoreCase("1") && !col2.equalsIgnoreCase("2"))) && srcOld == src && lineOld.length() >= MAX_LISTING_LINE_LENGH) {
+
+				int last = listings.size() - 1;
+				listing = listings.get(last);				
+				listing[LISTING_INCLUDE] = Integer.toString(src);				
+				listing[LISTING_LINE] = col2;
+				listing[LISTING_BLOCK] = col3;				
+				listing[LISTING_LINE_CONTENT] = listing[LISTING_LINE_CONTENT] + line.substring(12).replaceAll("^\\s+","").replaceAll("\\s+$","");
+				listings.set(last, listing);				
+			} else {
+
+				listing = new String[4];				
+				listing[LISTING_INCLUDE] = Integer.toString(src);
+				listing[LISTING_LINE] = col2;
+				listing[LISTING_BLOCK] = col3;
+				listing[LISTING_LINE_CONTENT] = line.substring(12).replaceAll("^\\s+","").replaceAll("\\s+$","");	
+				listings.add(listing);
+				sources.add(stack.isEmpty() ? source : stack.get(stack.size() - 1));
+			}		
+
+			col2Old = col2;
+			lineOld = line;
 			srcOld = src;
 		}
 	}
