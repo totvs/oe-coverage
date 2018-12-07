@@ -52,15 +52,12 @@ public class ProfilerCoverage {
 					this.parseCoverage(line);
 				} else if (blocks > PROFILER_BLOCK_SOURCES_LINES) {
 					
-					if(!this.parseCoverage(line)) {
-						
-						if (!readingLines) {
-							source = this.getLinesSource(line);
-							if(source!=null)
-								readingLines = true;							
-						} else if (source != null) {
-							this.parseLines(line, source);
-						}
+					if (!readingLines) {
+						source = this.getLinesSource(line);
+						if(source!=null)
+							readingLines = true;							
+					} else if (source != null) {
+						this.parseLines(line, source);
 					}
 				}
 			}
