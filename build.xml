@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="oe-coverage" default="build">
+    <property name="version" value="1.0" />
+    <property name="src.dir" location="./src" />
+	<property name="bin.dir" location="./bin" />
+    <property name="dst.dir" location="./dist" />
+	
+	<property name="main.class" value="com.oecoverage.coverage.SonarCoverage" />
+	
+	<target name="clean">
+        <delete dir="${bin.dir}" />
+        <delete dir="${dst.dir}" />
+    </target>
+    
+	<target name="init" depends="clean">
+        <mkdir dir="${bin.dir}" />
+		<mkdir dir="${dst.dir}" />
+    </target>
+    
+	<target name="compile" depends="init">
+        <javac includeAntRuntime="false" srcdir="${src.dir}" destdir="${bin.dir}" />
+    </target>
+	
+	<target name="build" depends="compile">
+        <jar destfile="${dst.dir}/${ant.project.name}.jar" basedir="${bin.dir}">
+        	<manifest>
+        		<attribute name="Main-Class" value="${main.class}" />
+        	</manifest>
+		</jar>
+    </target>
+</project>
