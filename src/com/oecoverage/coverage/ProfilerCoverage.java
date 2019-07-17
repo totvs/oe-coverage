@@ -15,6 +15,7 @@ public class ProfilerCoverage {
 	
 	private static final int PROFILER_BLOCK_INFO = 0;
 	private static final int PROFILER_BLOCK_SOURCES = 1;
+	private static final int PROFILER_BLOCK_CALL_TREE = 2;
 	private static final int PROFILER_BLOCK_COVERAGE = 3;
 	private static final int PROFILER_BLOCK_SOURCES_LINES = 4;
 
@@ -43,6 +44,35 @@ public class ProfilerCoverage {
 				source = null;
 				readingLines = false;
 			} else if (!line.isEmpty()){
+				switch (blocks) {
+					case PROFILER_BLOCK_INFO:
+						System.out.println("** Reading profiler file \"" + file + "\" **");
+						break;
+					case PROFILER_BLOCK_SOURCES:
+						if (!parseSource(line)){
+							blocks++;
+						}
+						break;
+					case PROFILER_BLOCK_CALL_TREE:
+						this.parseCallTree(line);
+						break;
+					case PROFILER_BLOCK_COVERAGE:
+						this.parseCoverage(line);
+						break;
+					default:
+						if (blocks > PROFILER_BLOCK_SOURCES_LINES) {
+							if (!readingLines) {
+								source = this.getLinesSource(line);
+								if(source!=null)
+									readingLines = true;							
+							} else if (source != null) {
+								this.parseLines(line, source);
+							}
+						}
+					
+				}
+						
+/*				
 				if (blocks == PROFILER_BLOCK_INFO) {
 					System.out.println("** Reading profiler file \"" + file + "\" **");
 				} else if (blocks == PROFILER_BLOCK_SOURCES) {
@@ -61,6 +91,7 @@ public class ProfilerCoverage {
 						this.parseLines(line, source);
 					}
 				}
+*/
 			}
 		}
 
@@ -100,7 +131,52 @@ public class ProfilerCoverage {
 		}		
 		return true;
 	}
-	
+
+	/**
+	 * Parses the coverage line extracted from the profiler.
+	 * @param coverageLine Line extracted from the profiler containing the coverage information.
+	 * @return if successful in covering the line
+	 *
+	 * {@code example: "21 1618 39 1"}
+	 */
+	private boolean parseCallTree(String callTreeLine) {
+		String filename;
+		String[] splitted = callTreeLine.split(" ");
+		
+		Map<Integer, Boolean> source = null;
+		
+		int lineno = 0;
+		int codeno = 0;
+		
+		if (splitted.length == 4 && !splitted[0].trim().equals("") && !splitted[1].trim().equals("")) {
+			codeno = Integer.valueOf(splitted[0].trim());
+			lineno = Integer.valueOf(splitted[1].trim());
+
+			if (lineno > 0) {
+				// Recover the covered source from the list.
+				filename = dbg.get(codeno);
+				source = sources.get(filename);
+				
+				if(filename != null){
+					// Creates the source covered lines list and adds the covered line.
+					if (source == null) {
+						source = new TreeMap<Integer, Boolean>();
+						sources.put(filename, source);
+					}
+					
+					// If the coverage line still doesn't exist or it's false, creates the new as true.
+					if (!source.containsKey(lineno) || !source.get(lineno)) {
+						source.put(lineno, true);
+					}
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+
 	/**
 	 * Parses the coverage line extracted from the profiler.
 	 * @param coverageLine Line extracted from the profiler containing the coverage information.
