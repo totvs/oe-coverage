@@ -75,7 +75,11 @@ public class SonarCoverage {
 		// Read all profilers files found in the provided path.
 		for (int i = 0; i < files.size(); i++) {
 			if (files.get(i).getName().indexOf(".out") > 0) {
-				this.profiler.readProfiler(files.get(i).getAbsolutePath());
+				try {
+					this.profiler.readProfiler(files.get(i).getAbsolutePath());	
+				} catch (Exception e)  {
+					e.printStackTrace();
+				}
 			}
 		}
 		
