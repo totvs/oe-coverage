@@ -109,7 +109,7 @@ public class ListingFile {
 							
 							for (String item : items) {
 							
-								if(!item.contains("&") && item.contains("/")) {
+								if(!item.contains("&") && (item.contains("/") || item.contains("\\"))) {
 									
 									stack.add(item.replace("{", "").replace("}", ""));
 								}
